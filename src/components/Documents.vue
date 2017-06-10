@@ -91,12 +91,17 @@ export default {
   methods: {
     displayDocument (event) {
       const documentId = event.target.getAttribute('data-id')
+      // Safari blocks window.open inside async calls, so we'll open it before
+      const win = window.open()
+
+      this.errors = []
 
       this.axios.get(trimUrl(this.api) + '/' + documentId)
       .then(response => {
-        console.dir(response.data)
+        win.location = response.data.content
       })
       .catch(e => {
+        win.close()
         this.errors.push(e.response.data)
       })
     },
