@@ -116,7 +116,12 @@ export default {
 
       this.axios.delete(trimUrl(this.api) + '/' + documentId)
       .then(response => {
-        this.getDocumentsList()
+        const index = this.documents.findIndex(
+          function (e) {
+            return e._id === documentId
+          }
+        )
+        this.documents.splice(index, 1)
       })
       .catch(e => {
         this.errors.push(e.response.data)
