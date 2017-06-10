@@ -1,6 +1,10 @@
 # pprima-front
 
-> Prestamos Prima technical test frontend
+## Prestamos Prima technical test frontend
+
+This is the frontend part for the PDF Uploader application technical test.
+
+This application is based on Vuejs (https://vuejs.org/). Communication with the backend REST API is based on Axios (https://github.com/mzabriskie/axios), wrapped into Vuejs using Vuejs-Axios (https://github.com/imcvampire/vue-axios).
 
 ## Build Setup
 
