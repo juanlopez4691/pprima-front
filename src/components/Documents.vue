@@ -83,6 +83,7 @@ export default {
   created () {
     this.getDocumentsList()
     this.$eventBus.$on('getDocumentsList', this.getDocumentsList)
+    this.$eventBus.$on('addDocument', this.addDocument)
   },
   props: [ 'api' ],
   data () {
@@ -90,6 +91,7 @@ export default {
       documents: [
       ],
       errors: []
+      documents: [],
     }
   },
   methods: {
@@ -119,6 +121,9 @@ export default {
       .catch(e => {
         this.errors.push(e.response.data)
       })
+    },
+    addDocument (document) {
+      this.documents.push(document)
     },
     getDocumentsList () {
       this.axios.get(this.api)

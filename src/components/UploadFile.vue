@@ -96,7 +96,7 @@ export default {
         )
         .then(response => {
           this.hideUploadField()
-          this.$eventBus.$emit('getDocumentsList', true)
+          this.$eventBus.$emit('addDocument', response.data)
         })
         .catch(e => {
           this.errors.push(e.response.data)
