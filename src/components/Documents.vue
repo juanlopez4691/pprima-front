@@ -2,6 +2,10 @@
   <div class="documents-wrapper">
     <error-alert :errors="errors"></error-alert>
 
+    <div v-if="!documents.length" class="alert alert-info">
+      <p>No PDF documents yet! Please, upload some.</p>
+    </div>
+
     <ul class="documents-list">
       <li class="document" v-for="document in documents">
         <a
