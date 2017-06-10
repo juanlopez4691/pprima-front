@@ -2,12 +2,14 @@
   <div class="documents-wrapper">
     <error-alert :errors="errors"></error-alert>
 
-    <div v-if="!documents.length" class="alert alert-info">
-      <p>No PDF documents yet! Please, upload some.</p>
-    </div>
+    <transition name="fade">
+      <div v-if="!documents.length && ready" class="alert alert-info">
+        <p>No PDF documents yet! Please, upload some.</p>
+      </div>
+    </transition>
 
-    <ul class="documents-list">
-      <li class="document" v-for="document in documents">
+    <transition-group class="documents-list" name="list-complete" tag="ul">
+      <li class="document list-complete-item" v-for="document in documents" v-bind:key="document">
         <a
           href="#"
           :data-id="document._id"
@@ -27,52 +29,72 @@
         <br />
         <span>{{ document.description }}</span>
       </li>
-    </ul>
+    </transition-group>
+
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .documents-list {
-    list-style: none;
-    padding: 0;
-    margin-left: 0;
+.documents-list {
+  list-style: none;
+  padding: 0;
+  margin-left: 0;
+}
+
+.document {
+  margin-bottom: 1em;
+}
+
+.document-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.5;
+  margin-bottom: .5em;
+
+  &:hover,
+  &:active,
+  &:focus,
+  &:visited {
+    text-decoration: none;
   }
+}
 
-  .document {
-    margin-bottom: 1em;
-  }
+.delete {
+  font-size: 1.5em;
+  color: darkred;
+  vertical-align: text-bottom;
 
-  .document-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    line-height: 1.5;
-    margin-bottom: .5em;
-
-    &:hover,
-    &:active,
-    &:focus,
-    &:visited {
-      text-decoration: none;
-    }
-  }
-
-  .delete {
-    font-size: 1.5em;
+  &:active,
+  &:focus,
+  &:visited {
     color: darkred;
-    vertical-align: text-bottom;
-
-    &:active,
-    &:focus,
-    &:visited {
-      color: darkred;
-      text-decoration: none;
-    }
-
-    &:hover {
-      text-decoration: none;
-      color: red;
-    }
+    text-decoration: none;
   }
+
+  &:hover {
+    text-decoration: none;
+    color: red;
+  }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.list-complete-item {
+  transition: all .5s;
+}
+.list-complete-enter, .list-complete-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-complete-leave-active {
+  position: absolute;
+}
 </style>
 
 <script>
@@ -88,10 +110,9 @@ export default {
   props: [ 'api' ],
   data () {
     return {
-      documents: [
-      ],
-      errors: []
       documents: [],
+      errors: [],
+      ready: false
     }
   },
   methods: {
@@ -133,6 +154,7 @@ export default {
     getDocumentsList () {
       this.axios.get(this.api)
       .then(response => {
+        this.ready = true
         this.documents = response.data
       })
       .catch(e => {
