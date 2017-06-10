@@ -2,16 +2,18 @@
   <div class="upload-wrapper">
     <error-alert :errors="errors"></error-alert>
 
-    <div v-if="uploadFieldVisible" class="form-group">
-      <label :for="id">{{ label }}</label>
-      <input
-        class="form-control"
-        type="file"
-        @change="fieldChange"
-        :id="id"
-        :fileType="fileType"
-      />
-    </div>
+    <transition name="fade">
+      <div v-if="uploadFieldVisible" class="form-group">
+        <label :for="id">{{ label }}</label>
+        <input
+          class="form-control"
+          type="file"
+          @change="fieldChange"
+          :id="id"
+          :fileType="fileType"
+        />
+      </div>
+    </transition>
 
     <button
       disabled
@@ -28,6 +30,17 @@
     >{{ btnLabel }}</button>
   </div>
 </template>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+  height: auto;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+  height: 0;
+}
+</style>
 
 <script>
 export default {
