@@ -73,7 +73,7 @@ export default {
       if (file.type.match(regex)) {
         document.getElementById(this.uploadBtnId).disabled = false
       } else {
-        this.errors.push({ message: 'File not supported! Only PDF, please' })
+        this.errors.push({ message: 'File type not supported!' })
         document.getElementById(this.uploadBtnId).disabled = true
       }
     },
